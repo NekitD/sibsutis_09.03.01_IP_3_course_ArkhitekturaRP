@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ip312s07-ingress
+  namespace: ip312
+  labels:
+    owner: ip312s07
+spec:
+  ingressClassName: traefik-dev
+  rules: 
+  - host: ip312s07-app.hawk-dev.csc.sibsutis.ru 
+    http: 
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: ip312s07-service
+            port:
+              number: 7777
+
+  

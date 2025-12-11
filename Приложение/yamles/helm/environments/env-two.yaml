@@ -1,0 +1,4 @@
+environment: "envtwo"
+reps: 1
+ingressHost: "ip312s07-app-env-two.hawk-dev.csc.sibsutis.ru"
+appVersion: "1.0.0-env-two"

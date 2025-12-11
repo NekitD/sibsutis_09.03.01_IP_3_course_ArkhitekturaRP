@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: ip312s07-app 
+    owner: ip312s07
+  name: ip312s07-app 
+  namespace: ip312
+spec:
+  containers:
+  - name: ip312s07-app 
+    image: cr.hawk.csc.sibsutis.ru/hawk-dev/ip312s07-my-simple-distributed-application:adb493a0
+    labels:
+      owner: ip312s07
+    imagePullPolicy: IfNotPresent
+    command: ["dotnet", "Backend.dll"]
+    securityContext:
+      capabilities:
+        drop: ["ALL"]
+    resources:
+      requests:
+        cpu: 32m
+        memory: 16Mi
+      limits:
+        cpu: 64m
+        memory: 32Mi
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 5000
+      failureThreshold: 3
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 5000
+        failureThreshold: 3
+        initialDelaySeconds: 15
+        periodSeconds: 10
+      startupProbe:
+        httpGet:
+          path: /
+          port: 5000
+        failureThreshold: 3
+        initialDelaySeconds: 15
+        periodSeconds: 10

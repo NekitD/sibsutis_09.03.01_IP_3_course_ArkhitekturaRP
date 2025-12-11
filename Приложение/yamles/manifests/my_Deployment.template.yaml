@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels: 
+    owner: ip312s07
+  name: ip312s07-app
+  namespace: ip312
+spec:
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: ip312s07-tables
+      owner: ip312s07
+  strategy: 
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  
+  template:
+    metadata: 
+      labels: 
+        app: ip312s07-tables
+        owner: ip312s07
+    spec:
+      containers:
+      - name: ip312s07-table 
+        image: ${DEPLOYMENT_IMAGE}
+        imagePullPolicy: IfNotPresent
+        command: ["dotnet", "Backend.dll"]
+        securityContext:
+          allowPrivilegeEscalation: false 
+          capabilities:
+            drop: ["ALL"]
+        resources:
+          requests:
+            cpu: 32m
+            memory: 16Mi
+          limits:
+            cpu: 64m
+            memory: 32Mi
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        startupProbe:
+          httpGet:
+            path: /
+            port: 5000
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+
+
+
+
+
+

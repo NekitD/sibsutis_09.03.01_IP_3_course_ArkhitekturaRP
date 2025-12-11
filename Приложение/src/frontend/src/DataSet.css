@@ -1,0 +1,45 @@
+.Table {
+    width: 200vh;
+    height: 90vh;
+    border-color: #ddd;
+    border: 2px solid #ddd;
+    text-align: center;
+    font-size: 20px;
+    table-layout: fixed;
+}
+
+.Table td:nth-child(1) {
+    width: 50px;
+    padding: 0 10px;
+}
+
+.headers {
+    background-color: rgba(17, 0, 255, 0.699);
+    color: white
+}
+
+.header {
+    border-right: 2px solid #ddd;
+    border-bottom: 2px solid #ddd;
+}
+
+.selected-row {
+    background-color: #e6f7ff;
+}
+
+
+.selection-indicator {
+    border-right: 2px solid #ddd;
+}
+
+.selected-row .selection-indicator {
+    background-color: #1890ff;
+}
+
+.cell {
+    border: 2px solid #ddd;
+}
+
+.controls {
+    margin-left: 20%;
+}

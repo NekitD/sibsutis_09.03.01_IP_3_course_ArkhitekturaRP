@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels: 
+    owner: ip312s07
+    environment: {{ .Release.Name }} 
+  name: {{.Release.Name}}
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: {{.Values.replicaCount}}
+  revisionHistoryLimit: {{.Values.revisionHistoryLimit}}
+  selector:
+    matchLabels:
+      app: ip312s07-tables
+      owner: ip312s07
+      environment: {{ .Release.Name }} 
+  strategy: 
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  
+  template:
+    metadata: 
+      labels: 
+        app: ip312s07-tables
+        owner: ip312s07
+        environment: {{ .Release.Name }} 
+    spec:
+      containers:
+      - name: ip312s07-table 
+        image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
+        imagePullPolicy: IfNotPresent
+        command: {{.Values.command | toJson}}
+        securityContext:
+          allowPrivilegeEscalation: false 
+          capabilities:
+            drop: ["ALL"]
+        resources:
+          requests:
+            cpu: {{.Values.resources.requests.cpu}}
+            memory: {{.Values.resources.requests.memory}}
+          limits:
+            cpu: {{.Values.resources.limits.cpu}}
+            memory: {{.Values.resources.limits.memory}}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{.Values.app.port}}
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: {{.Values.app.port}}
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        startupProbe:
+          httpGet:
+            path: /
+            port: {{.Values.app.port}}
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+
+
+
+
+
+

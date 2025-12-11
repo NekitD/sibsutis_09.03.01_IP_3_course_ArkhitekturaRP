@@ -1,0 +1,32 @@
+replicaCount: {{.StateValues.reps}}
+
+revisionHistoryLimit: 10
+
+app:
+  port: 5000
+  command: ["dotnet", "Backend.dll"]
+
+
+image:
+  repository: cr.hawk.csc.sibsutis.ru/hawk-dev/ip312s07-my-simple-distributed-application
+  tag: "It shall be set" 
+
+service:
+  name: ip312s07-service
+  port: 7777
+  targetPort: 5000
+  type: ClusterIP
+
+ingress:
+  name: ip312s07-ingress
+  enabled: true
+  className: traefik-dev
+  host: {{.StateValues.ingressHost | quote}}
+
+resources:
+  requests:
+    cpu: 32m
+    memory: 16Mi
+  limits:
+    cpu: 64m
+    memory: 32Mi

@@ -1,0 +1,21 @@
+
+environments:
+  env-one: 
+    values: 
+      - yamles/helm/environments/env-one.yaml
+
+  env-two: 
+    values: 
+      - yamles/helm/environments/env-two.yaml
+
+---
+
+releases:
+  - name: ip312s07-app-{{ .Environment.Name }}
+    namespace: ip312
+    chart: ./yamles/helm/charts/ip312s07-app
+    values:
+      - ./yamles/helm/values.yaml.gotmpl
+    disableValidation: true
+    createNamespace: false
+
